@@ -84,10 +84,10 @@
             android:id="@+id/tvIMC"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Seu IMC é: 21"
+            tools:text="Seu IMC é: 21"
             android:textAlignment="center"
             android:textSize="22sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <ImageView
             android:layout_below="@+id/tvIMC"
@@ -95,14 +95,14 @@
             android:id="@+id/ivIMCStatus"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/masc_ideal"/>
+            tools:src="@drawable/masc_ideal"/>
 
         <TextView
             android:id="@+id/tvIMCStatus"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Peso Ideal"
+            tools:text="Peso Ideal"
             android:textAlignment="center"
             android:textSize="22sp"
             android:textStyle="bold"

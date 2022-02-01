@@ -7,8 +7,9 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import kotlin.math.roundToInt
-import kotlin.math.roundToLong
+import br.com.adonaipinheiro.imc.extensions.format
+import br.com.adonaipinheiro.imc.extensions.valueDouble
+import br.com.adonaipinheiro.imc.watchers.DecimalTextWatcher
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,8 +30,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpListeners() {
         btCalcular.setOnClickListener {
-            calcular()
+            calculate()
         }
+
+        etPeso.addTextChangedListener(DecimalTextWatcher(etPeso, 1))
+        etAltura.addTextChangedListener(DecimalTextWatcher(etAltura))
     }
 
     private fun setUpView() {
@@ -42,33 +46,32 @@ class MainActivity : AppCompatActivity() {
         ivIMCStatus = findViewById(R.id.ivIMCStatus)
     }
 
-    private fun calcular() {
-        val peso = etPeso.text.toString().toDouble()
-        val altura = etAltura.text.toString().toDouble()
-        val imc = peso / (altura * altura)
+    private fun calculate() {
+        val peso = etPeso.valueDouble()
+        val altura = etAltura.valueDouble()
 
-        when (imc) {
-            in 0.0..18.5 -> configuraIMC(
+        when (val imc = peso / (altura * altura)) {
+            in 0.0..18.5 -> configureIMC(
                 imc, R.drawable.masc_abaixo,
                 R.string.magreza
             )
-            in 18.6..24.9 -> configuraIMC(
+            in 18.6..24.9 -> configureIMC(
                 imc, R.drawable.masc_ideal,
                 R.string.peso_normal
             )
-            in 25.0..29.9 -> configuraIMC(
+            in 25.0..29.9 -> configureIMC(
                 imc, R.drawable.masc_sobre,
                 R.string.sobre_peso
             )
-            in 30.0..34.9 -> configuraIMC(
+            in 30.0..34.9 -> configureIMC(
                 imc, R.drawable.masc_obeso,
                 R.string.obesidade_grau_i
             )
-            in 35.0..39.9 -> configuraIMC(
+            in 35.0..39.9 -> configureIMC(
                 imc, R.drawable.masc_extremo_obeso,
                 R.string.obesidade_grau_ii
             )
-            else -> configuraIMC(
+            else -> configureIMC(
                 imc, R.drawable.masc_extremo_obeso,
                 R.string.obesidade_grau_iii
             )
@@ -76,8 +79,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun configuraIMC(imc: Double, drawableId: Int, stringId: Int) {
-        tvIMC.text = "Seu IMC é: ${String.format("%.2f", imc).toDouble()}"
+    private fun configureIMC(imc: Double, drawableId: Int, stringId: Int) {
+        tvIMC.text = getString(R.string.seu_imc, imc.format(2))
 
         ivIMCStatus.setImageDrawable(ContextCompat.getDrawable(this, drawableId))
 
